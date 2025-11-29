@@ -170,6 +170,14 @@ def apply_htop(colours: dict[str, str]) -> None:
 
 
 @log_exception
+def apply_nvim(colours: dict[str, str]) -> None:
+    # Generates lua file with # hashes (hash=True)
+    template = gen_replace(colours, templates_dir / "nvim.lua", hash=True)
+    # Writes to ~/.config/nvim/lua/caelestia_colors.lua
+    write_file(config_dir / "nvim/lua/caelestia_colors.lua", template)
+
+
+@log_exception
 def apply_gtk(colours: dict[str, str], mode: str) -> None:
     template = gen_replace(colours, templates_dir / "gtk.css", hash=True)
     write_file(config_dir / "gtk-3.0/gtk.css", template)
@@ -259,6 +267,8 @@ def apply_colours(colours: dict[str, str], mode: str) -> None:
         apply_nvtop(colours)
     if check("enableHtop"):
         apply_htop(colours)
+    if check("enableNvim"):
+        apply_nvim(colours)
     if check("enableGtk"):
         apply_gtk(colours, mode)
     if check("enableQt"):
